@@ -1,20 +1,23 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/sdelicata/sitemap/sitemap"
+)
 
 func main() {
-	url := Url("https://rockenfolie.com/")
+	url := sitemap.Url("https://go.dev/")
 
 	fmt.Println("Creating sitemap...")
-	sitemap, err := NewSitemap(url, 2)
+	sm, err := sitemap.Create(url, 2)
 	if err != nil {
 		fmt.Printf("%s", err)
 	}
 
-	println("==== SITEMAP ====")
-	for _, u := range sitemap {
+	fmt.Println("==== SITEMAP ====")
+	for _, u := range sm {
 		fmt.Println(u)
 	}
-	println("========")
-	fmt.Printf("Count: %d", len(sitemap))
+	fmt.Println("========")
+	fmt.Printf("Count: %d", len(sm))
 }
