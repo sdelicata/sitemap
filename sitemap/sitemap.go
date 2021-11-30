@@ -49,6 +49,14 @@ func (s *Sitemap) add(url Url)  {
 	}
 }
 
+func (s *Sitemap) sort()  {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	sort.Slice(s.urls, func(i, j int) bool {
+		return s.urls[i] < s.urls[j]
+	})
+}
+
 func Create(url Url, depth int) ([]Url, error) {
 	var wg sync.WaitGroup
 	sitemap := Sitemap{sync.Mutex{}, []Url{}}
@@ -62,9 +70,7 @@ func Create(url Url, depth int) ([]Url, error) {
 
 	wg.Wait()
 
-	sort.Slice(sitemap.urls, func(i, j int) bool {
-		return sitemap.urls[i] < sitemap.urls[j]
-	})
+	sitemap.sort()
 	return sitemap.urls, nil
 }
 
